@@ -3,6 +3,8 @@ import 'package:flutter_play_android/HomePage.dart';
 import 'package:flutter_play_android/Knowledge.dart';
 import 'package:flutter_play_android/Project.dart';
 import 'package:flutter_play_android/PersonalCenter.dart';
+import 'package:flutter/widgets.dart';
+
 
 class MainNavigation extends StatefulWidget {
   @override
@@ -36,10 +38,11 @@ class _NavigationState extends State<MainNavigation>  with SingleTickerProviderS
         child: new TabBar(
           controller: tabController,
           tabs: <Widget>[
-            new Tab(text: "首页",icon: new Icon(Icons.android)),
-            new Tab(text: "知识体系",icon: new Icon(Icons.android)),
-            new Tab(text: "项目",icon: new Icon(Icons.android)),
-            new Tab(text: "个人中心",icon: new Icon(Icons.android)),
+            new Tab(text: "首页",icon: Icon(IconData(0xe656, fontFamily:  'iconfont'))),
+//            new Tab(text: "首页",icon: new Icon(Icons.android)),
+            new Tab(text: "知识体系",icon:  Icon(IconData(0xe605, fontFamily:  'iconfont'))),
+            new Tab(text: "项目",icon:  Icon(Icons.android)),
+            new Tab(text: "个人中心",icon:  Icon(Icons.android)),
           ],
           //tab被选中时的颜色，设置之后选中的时候，icon和text都会变色
           labelColor: Colors.amber,

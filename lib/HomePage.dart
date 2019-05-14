@@ -12,7 +12,8 @@ class _HomePageState extends State<HomePage>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Material(
-      child: Center(child: new Text('首页', textDirection: TextDirection.ltr)),
+      child: Center(  child:  Icon(IconData(0xe656,fontFamily: 'iconfont')),
+      ),
     );
   }
 

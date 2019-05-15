@@ -38,14 +38,13 @@ class _NavigationState extends State<MainNavigation>  with SingleTickerProviderS
         child: new TabBar(
           controller: tabController,
           tabs: <Widget>[
-            new Tab(text: "首页",icon: Icon(IconData(0xe656, fontFamily:  'iconfont'))),
-//            new Tab(text: "首页",icon: new Icon(Icons.android)),
-            new Tab(text: "知识体系",icon:  Icon(IconData(0xe605, fontFamily:  'iconfont'))),
-            new Tab(text: "项目",icon:  Icon(Icons.android)),
-            new Tab(text: "个人中心",icon:  Icon(Icons.android)),
+            new Tab(text: "首页",icon: _getIcon(0xe656)),
+            new Tab(text: "知识体系",icon:  _getIcon(0xe605)),
+            new Tab(text: "项目",icon:  _getIcon(0xe637)),
+            new Tab(text: "个人中心",icon:  _getIcon(0xe645)),
           ],
           //tab被选中时的颜色，设置之后选中的时候，icon和text都会变色
-          labelColor: Colors.amber,
+          labelColor: Colors.lightGreenAccent,
           //tab未被选中时的颜色，设置之后选中的时候，icon和text都会变色
           unselectedLabelColor: Colors.black,
         ),
@@ -69,5 +68,10 @@ class _NavigationState extends State<MainNavigation>  with SingleTickerProviderS
     //释放内存，节省开销
     tabController.dispose();
     super.dispose();
+  }
+
+  /// 获取图标
+  Icon _getIcon(int unicode){
+    return  Icon(IconData(unicode, fontFamily:  'iconfont'));
   }
 }

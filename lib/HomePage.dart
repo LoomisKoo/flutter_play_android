@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
   }
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   ///这个key用来在不是手动下拉，而是点击某个button或其它操作时，代码直接触发下拉刷新
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorState =
       new GlobalKey<RefreshIndicatorState>();
@@ -167,6 +167,8 @@ class _HomePageState extends State<HomePage> {
                       fit: BoxFit.cover,
                     ));
               }).toList(),
+              intervalDuration: Duration(seconds: 3),
+//              animationDuration: Duration(milliseconds: 4000),
               cycleRolling: false,
               autoRolling: true,
               indicatorMargin: 8,
@@ -255,83 +257,83 @@ class _HomePageState extends State<HomePage> {
       DateTime date, int index) {
     return new Card(
         child: new InkWell(
-          onTap: () {
-            var url = homeData[index].link;
-            var title = homeData[index].title;
-            //TODO
+      onTap: () {
+        var url = homeData[index].link;
+        var title = homeData[index].title;
+        //TODO
 //            NavigatorUtils.gotoDetail(context, url, title);
-          },
-          child: new Container(
-            margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10.0),
-            child: new Column(
+      },
+      child: new Container(
+        margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10.0),
+        child: new Column(
+          children: <Widget>[
+            new Row(
               children: <Widget>[
-                new Row(
-                  children: <Widget>[
-                    new Container(
-                      decoration: BoxDecoration(
-                          borderRadius: new BorderRadius.circular(3.0),
-                          border: new Border.all(color: Colors.blue)),
-                      child: new Text(
-                        item.superChapterName,
-                        style: new TextStyle(color: Colors.blue),
-                      ),
-                    ),
-                    new Container(
-                      margin: EdgeInsets.only(left: 5.0),
-                      child: new Text(item.author),
-                    ),
-                    new Expanded(child: new Container()),
-                    new Text(
-                      "${date.year}年${date.month}月${date.day}日 ${date.hour}:${date.minute}",
-                      style: new TextStyle(fontSize: 12.0, color: Colors.grey),
-                    ),
-                  ],
+                new Container(
+                  decoration: BoxDecoration(
+                      borderRadius: new BorderRadius.circular(3.0),
+                      border: new Border.all(color: Colors.blue)),
+                  child: new Text(
+                    item.superChapterName,
+                    style: new TextStyle(color: Colors.blue),
+                  ),
                 ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Container(
-                      height: 80.0,
-                      child: new Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          new Container(
-                            width: CommonUtil.getScreenWidth(context) - 100,
-                            child: new Text(
-                              item.title,
-                              softWrap: true, //换行
-                              maxLines: 2,
-                              style: new TextStyle(fontSize: 16.0),
-                            ),
-                            margin: EdgeInsets.only(top: 10.0),
-                          ),
-                          new Container(
-                            child: new Text(
-                              item.superChapterName + "/" + item.author,
-                              style: new TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    item.envelopePic.isEmpty
-                        ? new Container(
-                      width: 60.0,
-                      height: 60.0,
-                    )
-                        : new Image.network(
-                      item.envelopePic,
-                      width: 60.0,
-                      height: 60.0,
-                      fit: BoxFit.cover,
-                    ),
-                  ],
+                new Container(
+                  margin: EdgeInsets.only(left: 5.0),
+                  child: new Text(item.author),
+                ),
+                new Expanded(child: new Container()),
+                new Text(
+                  "${date.year}年${date.month}月${date.day}日 ${date.hour}:${date.minute}",
+                  style: new TextStyle(fontSize: 12.0, color: Colors.grey),
                 ),
               ],
             ),
-          ),
-        ));
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Container(
+                  height: 80.0,
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      new Container(
+                        width: CommonUtil.getScreenWidth(context) - 100,
+                        child: new Text(
+                          item.title,
+                          softWrap: true, //换行
+                          maxLines: 2,
+                          style: new TextStyle(fontSize: 16.0),
+                        ),
+                        margin: EdgeInsets.only(top: 10.0),
+                      ),
+                      new Container(
+                        child: new Text(
+                          item.superChapterName + "/" + item.author,
+                          style: new TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                item.envelopePic.isEmpty
+                    ? new Container(
+                        width: 60.0,
+                        height: 60.0,
+                      )
+                    : new Image.network(
+                        item.envelopePic,
+                        width: 60.0,
+                        height: 60.0,
+                        fit: BoxFit.cover,
+                      ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ));
   }
 
   ///没有更多数据
@@ -365,4 +367,8 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

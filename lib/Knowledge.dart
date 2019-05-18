@@ -15,7 +15,8 @@ class Knowledge extends StatefulWidget {
   }
 }
 
-class _KnowledgeState extends State<Knowledge> {
+class _KnowledgeState extends State<Knowledge>
+    with AutomaticKeepAliveClientMixin {
   bool isLoading = true;
   List<Data.EntityData> dataList = [];
 
@@ -31,23 +32,17 @@ class _KnowledgeState extends State<Knowledge> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        title: Text("知识体系"),
-        centerTitle: true,
-      ),
-      body: isLoading
-          ? _buildSpinKitCircle()
-          : dataList.length > 0
-              ? _buildListView()
-              : Container(
-                  child: Text(
-                    "没有更多数据哦",
-                    style: TextStyle(fontSize: 20, color: Colors.black),
-                  ),
-                ),
+        appBar: AppBar(
+          title: Text("知识体系"),
+          centerTitle: true,
+        ),
+        body: isLoading
+            ? _buildSpinKitCircle()
+            : _showData()
     );
   }
 
+  ///创建loading框
   Widget _buildSpinKitCircle() {
     return SpinKitCircle(
       size: 60.0,
@@ -62,6 +57,20 @@ class _KnowledgeState extends State<Knowledge> {
     );
   }
 
+  ///显示数据
+  Widget _showData() {
+    return dataList.length > 0
+        ? _buildListView()
+        : Container(
+      child: Text(
+        "没有更多数据哦",
+        style: TextStyle(fontSize: 20, color: Colors.black),
+      ),
+    )
+    ,
+  }
+
+  ///创建listView
   Widget _buildListView() {
     return ListView(
       children: dataList.map((data) {
@@ -109,6 +118,7 @@ class _KnowledgeState extends State<Knowledge> {
     );
   }
 
+  ///获取知识体系列表的数据
   Future _getNetData() async {
     var url = Api.KNOWLEDGE_TREE;
     var response = await HttpUtil().get(url);
@@ -118,4 +128,7 @@ class _KnowledgeState extends State<Knowledge> {
       isLoading = false;
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

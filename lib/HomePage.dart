@@ -1,28 +1,31 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:banner_view/banner_view.dart';
 import 'package:flutter_play_android/utils/CommonUtil.dart';
+import 'package:flutter_play_android/utils/NavigatorUtils.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'entity/HomeArticleListEntityEntity.dart' as ArticleListEntity;
-import 'entity/HomeBannerEntityEntity.dart' as BannerEntity;
+import 'entity/HomeArticleListEntity.dart' as ArticleListEntity;
+import 'entity/HomeBannerEntity.dart' as BannerEntity;
 import 'http/Http.dart';
 import 'http/api/Api.dart';
 
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return new _HomePageState();
+    return _HomePageState();
   }
 }
 
-class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   ///这个key用来在不是手动下拉，而是点击某个button或其它操作时，代码直接触发下拉刷新
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorState =
-      new GlobalKey<RefreshIndicatorState>();
+      GlobalKey<RefreshIndicatorState>();
 
   final ScrollController _scrollController =
-      new ScrollController(keepScrollOffset: false);
+      ScrollController(keepScrollOffset: false);
 
   ///banner数据源
   List<ArticleListEntity.HomeArticleListEntityDataData> homeData = [];
@@ -51,13 +54,13 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Material(
-      child: new Scaffold(
-        appBar: new AppBar(
-          title: new Text("首页"),
+    return Material(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("首页"),
           centerTitle: true,
           actions: <Widget>[
-            new IconButton(
+            IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
                   //TODO
@@ -65,7 +68,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
                 })
           ],
         ),
-        body: new RefreshIndicator(
+        body: RefreshIndicator(
           color: Colors.green,
           child: _buildCustomListView(),
           onRefresh: _refreshHelper,
@@ -91,7 +94,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   }
 
   Future<Null> _refreshHelper() {
-    final Completer<Null> completer = new Completer<Null>();
+    final Completer<Null> completer = Completer<Null>();
     //清空数据
     homeData.clear();
     bannerList.clear();
@@ -104,7 +107,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   ///请求banner数据
   _getBannerList([Completer completer]) async {
     var response = await HttpUtil().get(Api.BANNER_LIST);
-    var item = new BannerEntity.Entity.fromJson(response);
+    var item = BannerEntity.Entity.fromJson(response);
     bannerList = item.data;
     setState(() {});
   }
@@ -116,7 +119,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
     }
     var response =
         await HttpUtil().get(Api.HOME_LIST + page.toString() + "/json");
-    var item = new ArticleListEntity.HomeArticleListEntity.fromJson(response);
+    var item = ArticleListEntity.HomeArticleListEntity.fromJson(response);
     completer?.complete();
     if (item.data.datas.length < pageSize) {
       isHasNoMore = true;
@@ -135,7 +138,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   }
 
   _buildCustomListView() {
-    return new ListView.builder(
+    return ListView.builder(
       ///保持ListView任何情况都能滚动，解决在RefreshIndicator的兼容问题。
       physics: const AlwaysScrollableScrollPhysics(),
       key: _refreshIndicatorState,
@@ -153,16 +156,15 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
 
   ///创建banner
   _buildBanner() {
-    return new Container(
+    return Container(
       child: bannerList.length > 0
-          ? new BannerView(
+          ? BannerView(
               bannerList.map((BannerEntity.HomeBannerEntityData item) {
-                return new GestureDetector(
+                return GestureDetector(
                     onTap: () {
-                      //TODO
-//                  NavigatorUtils.gotoDetail(context, item.url, item.title);
+                      NavigatorUtils.gotoDetail(context, item.url, item.title);
                     },
-                    child: new Image.network(
+                    child: Image.network(
                       item.imagePath,
                       fit: BoxFit.cover,
                     ));
@@ -179,7 +181,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
                 return _buildIndicatorItemContainer(indicator);
               },
             )
-          : new Container(),
+          : Container(),
       width: double.infinity,
       height: 250.0,
     );
@@ -188,49 +190,49 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   ///创建banner的indicator
   Widget _buildIndicatorItem(Color color, {bool isSelected = false}) {
     double size = isSelected ? 10.0 : 6.0;
-    return new Container(
+    return Container(
       width: size,
       height: size,
-      decoration: new BoxDecoration(
+      decoration: BoxDecoration(
         color: color,
         shape: BoxShape.rectangle,
-        borderRadius: new BorderRadius.all(
-          new Radius.circular(5.0),
+        borderRadius: BorderRadius.all(
+          Radius.circular(5.0),
         ),
       ),
     );
   }
 
   Widget _buildIndicatorItemContainer(Widget indicator) {
-    var container = new Container(
+    var container = Container(
       height: 40.0,
-      child: new Stack(
+      child: Stack(
         children: <Widget>[
-          new Opacity(
+          Opacity(
             opacity: isLoading ? 1.0 : 0.7,
-            child: new Container(
+            child: Container(
               color: Colors.grey[300],
             ),
           ),
-          new Container(
+          Container(
             margin: EdgeInsets.only(right: 10.0),
-            child: new Align(
+            child: Align(
               alignment: Alignment.centerRight,
               child: indicator,
             ),
           ),
-          new Align(
+          Align(
             alignment: Alignment.centerLeft,
-            child: new Container(
+            child: Container(
               margin: EdgeInsets.only(left: 15.0),
-              child: new Text(bannerList[bannerIndex].title),
+              child: Text(bannerList[bannerIndex].title),
             ),
           )
         ],
       ),
     );
 
-    return new Align(
+    return Align(
       alignment: Alignment.bottomCenter,
       child: container,
     );
@@ -255,112 +257,112 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   ///卡片式布局
   _buildCardItem(ArticleListEntity.HomeArticleListEntityDataData item,
       DateTime date, int index) {
-    return new Card(
-        child: new InkWell(
-      onTap: () {
-        var url = homeData[index].link;
-        var title = homeData[index].title;
-        //TODO
-//            NavigatorUtils.gotoDetail(context, url, title);
-      },
-      child: new Container(
-        margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10.0),
-        child: new Column(
-          children: <Widget>[
-            new Row(
+    return Card(
+        margin: EdgeInsets.only(left: 5, top: 2.5, right: 5, bottom: 2.5),
+        child: InkWell(
+          onTap: () {
+            var url = homeData[index].link;
+            var title = homeData[index].title;
+            NavigatorUtils.gotoDetail(context, url, title);
+          },
+          child: Container(
+            margin: EdgeInsets.all(10.0),
+            child: Column(
               children: <Widget>[
-                new Container(
-                  decoration: BoxDecoration(
-                      borderRadius: new BorderRadius.circular(3.0),
-                      border: new Border.all(color: Colors.blue)),
-                  child: new Text(
-                    item.superChapterName,
-                    style: new TextStyle(color: Colors.blue),
-                  ),
+                Row(
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Colors.blue)),
+                      child: Text(
+                        item.superChapterName,
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 5.0),
+                      child: Text(item.author),
+                    ),
+                    Expanded(child: Container()),
+                    Text(
+                      "${date.year}年${date.month}月${date.day}日 ${date.hour}:${date.minute}",
+                      style: TextStyle(fontSize: 12.0, color: Colors.grey),
+                    ),
+                  ],
                 ),
-                new Container(
-                  margin: EdgeInsets.only(left: 5.0),
-                  child: new Text(item.author),
-                ),
-                new Expanded(child: new Container()),
-                new Text(
-                  "${date.year}年${date.month}月${date.day}日 ${date.hour}:${date.minute}",
-                  style: new TextStyle(fontSize: 12.0, color: Colors.grey),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      height: 80.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: CommonUtil.getScreenWidth(context) - 100,
+                            child: Text(
+                              item.title,
+                              softWrap: true, //换行
+                              maxLines: 2,
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                            margin: EdgeInsets.only(top: 10.0),
+                          ),
+                          Container(
+                            child: Text(
+                              item.superChapterName + "/" + item.author,
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    item.envelopePic.isEmpty
+                        ? Container(
+                            width: 60.0,
+                            height: 60.0,
+                          )
+                        : Image.network(
+                            item.envelopePic,
+                            width: 60.0,
+                            height: 60.0,
+                            fit: BoxFit.cover,
+                          ),
+                  ],
                 ),
               ],
             ),
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                new Container(
-                  height: 80.0,
-                  child: new Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      new Container(
-                        width: CommonUtil.getScreenWidth(context) - 100,
-                        child: new Text(
-                          item.title,
-                          softWrap: true, //换行
-                          maxLines: 2,
-                          style: new TextStyle(fontSize: 16.0),
-                        ),
-                        margin: EdgeInsets.only(top: 10.0),
-                      ),
-                      new Container(
-                        child: new Text(
-                          item.superChapterName + "/" + item.author,
-                          style: new TextStyle(color: Colors.grey),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                item.envelopePic.isEmpty
-                    ? new Container(
-                        width: 60.0,
-                        height: 60.0,
-                      )
-                    : new Image.network(
-                        item.envelopePic,
-                        width: 60.0,
-                        height: 60.0,
-                        fit: BoxFit.cover,
-                      ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 
   ///没有更多数据
   Widget _buildNoMoreData() {
-    return new Container(
+    return Container(
       margin: EdgeInsets.only(top: 15.0, bottom: 15.0),
       alignment: Alignment.center,
-      child: new Text("没有更多数据了"),
+      child: Text("没有更多数据了"),
     );
   }
 
   ///加载中
   Widget _buildLoadMoreLoading() {
-    return new Padding(
+    return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: new Center(
-        child: new Opacity(
+      child: Center(
+        child: Opacity(
           opacity: isLoading ? 1.0 : 0.0,
-          child: new Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SpinKitFadingCircle(
                 color: Colors.grey,
                 size: 30.0,
               ),
-              new Padding(padding: EdgeInsets.only(left: 10)),
-              new Text("正在加载更多...")
+              Padding(padding: EdgeInsets.only(left: 10)),
+              Text("正在加载更多...")
             ],
           ),
         ),

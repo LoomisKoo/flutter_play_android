@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_play_android/entity/KnowledgeListEntity.dart' as KnowledgeListEntity;
+import 'package:flutter_play_android/view/KnowledgeListPage.dart';
 import 'package:flutter_play_android/view/common/DetailsWidget.dart';
 //import 'package:mou/view/AboutUsPage.dart';
 //import 'package:mou/view/KnowledgeListPage.dart';
@@ -45,9 +46,9 @@ class NavigatorUtils {
 //
   ///去知识详情界面
   static gotoKnowledgeList(BuildContext context, String name, KnowledgeListEntity.EntityData data) {
-//    return Navigator.push(context,
-//        new CupertinoPageRoute(builder: (context) =>
-//        new KnowledgeListPage(name: name, data: data,)));
+    return Navigator.push(context,
+        new CupertinoPageRoute(builder: (context) =>
+        new KnowledgeListPage(name: name, data: data,)));
   }
 //
 //  ///关于我界面

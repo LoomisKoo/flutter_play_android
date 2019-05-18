@@ -10,7 +10,6 @@ import 'http/api/Api.dart';
 class Knowledge extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return new _KnowledgeState();
   }
 }
@@ -22,7 +21,6 @@ class _KnowledgeState extends State<Knowledge>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     isLoading = true;
     _getNetData();
@@ -66,8 +64,7 @@ class _KnowledgeState extends State<Knowledge>
         "没有更多数据哦",
         style: TextStyle(fontSize: 20, color: Colors.black),
       ),
-    )
-    ,
+    );
   }
 
   ///创建listView

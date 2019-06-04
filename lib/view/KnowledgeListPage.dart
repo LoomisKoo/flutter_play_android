@@ -65,7 +65,7 @@ class ListPage extends StatefulWidget {
   }
 }
 
-class ListPageState extends State<ListPage>  with AutomaticKeepAliveClientMixin{
+class ListPageState extends State<ListPage> with AutomaticKeepAliveClientMixin {
   bool isLoading = true;
   final int cid;
 
@@ -102,6 +102,8 @@ class ListPageState extends State<ListPage>  with AutomaticKeepAliveClientMixin{
                   NavigatorUtils.gotoDetail(context, item.link, item.title);
                 },
                 child: new Card(
+                  margin:
+                      EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
                   child: Container(
                     margin: EdgeInsets.only(
                         left: 10.0, right: 10.0, top: 10.0, bottom: 10.0),
